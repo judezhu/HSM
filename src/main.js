@@ -26,3 +26,7 @@ ipcMain.on('show-picker', (event, options) => {
   pickerDialog.webContents.send('open-scanner', options)
 })
 
+ipcMain.on('source-id-selected', (event, sourceId) => {
+  pickerDialog.hide()
+})
+
