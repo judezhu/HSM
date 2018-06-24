@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "build": "electron-packager ./src ElectronScreenRecorder  --platform=darwin --arch=x64 --version=0.36.0 --icon=src/Icon.icns",
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "npm i electron"
   },
   "main": "src/main.js",
   "bin": {
