@@ -21,9 +21,9 @@ app.on('ready', () => {
   pickerDialog.loadURL('file://' + __dirname + '/picker.html')
 });
 
-ipcMain.on('show-picker', (event, options) => {
+ipcMain.on('show-picker', (event, content) => {
   pickerDialog.show()
-  pickerDialog.webContents.send('open-scanner', options)
+  pickerDialog.webContents.send('open-scanner', content)
 })
 
 ipcMain.on('source-id-selected', (event, sourceId) => {

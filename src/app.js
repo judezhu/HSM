@@ -1,5 +1,7 @@
-const Instascan = require('instascan');
 
+const {ipcRenderer} = require('electron')
+const Instascan = require('instascan');
+console.log(process.versions);
 
 let scanner = null
 let scans = []
@@ -10,6 +12,7 @@ scanner = new Instascan.Scanner({ video: document.getElementById('preview'), sca
 scanner.addListener('scan', function (content, image) {
   console.log('content', content);
   alert(content);
+  ipcRenderer.send('show-picker', content);
 });
 Instascan.Camera.getCameras().then(function (cameras) {
   cameras = cameras;
