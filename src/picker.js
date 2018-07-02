@@ -1,6 +1,6 @@
 const {desktopCapturer, ipcRenderer} = require('electron')
-var {createSplitKeys} = require('keychain')
-console.log(createSplitKeys);
+const {eth, key} = require('keychain');
+console.log(key);
 const domify = require('domify')
 console.log(domify)
 
@@ -19,7 +19,7 @@ const cancelConfig = () => {
 const createKeys = () => {
   if(config !== null) {
     console.log('config', config);
-    createSplitKeys.createSplitKeysAndVerifyResults(config['walletName'], config['entropy'], config['numShares'], config['threshhold']);
+    key.createSplitKeysAndVerifyResults(config['walletName'], config['entropy'], config['numShares'], config['threshold']);
     alert("Wallet created successfully");
   }
   else {
