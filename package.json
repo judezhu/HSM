@@ -12,8 +12,7 @@
   ],
   "scripts": {
     "build": "electron-packager ./src ElectronScreenRecorder  --platform=darwin --arch=x64 --version=0.36.0 --icon=src/Icon.icns",
-    "start": "electron .",
-    "postinstall": "npm i electron"
+    "start": "electron ."
   },
   "main": "src/main.js",
   "bin": {
@@ -25,6 +24,7 @@
   },
   "dependencies": {
     "domify": "^1.4.0",
-    "instascan": "^1.0.0"
+    "instascan": "^1.0.0",
+    "keychain": "^1.0.1"
   }
 }

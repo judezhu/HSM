@@ -1,8 +1,14 @@
 const {desktopCapturer, ipcRenderer} = require('electron')
+var {createSplitKeys} = require('keychain')
+console.log(createSplitKeys);
 const domify = require('domify')
+console.log(domify)
+
+let config = null
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#config-cancel').addEventListener('click', cancelConfig)
+  document.querySelector('#create-keys').addEventListener('click', createKeys)
 })
 
 const cancelConfig = () => {
@@ -10,9 +16,23 @@ const cancelConfig = () => {
   console.log("press esc key");
 }
 
+const createKeys = () => {
+  if(config !== null) {
+    console.log('config', config);
+    createSplitKeys.createSplitKeysAndVerifyResults(config['walletName'], config['entropy'], config['numShares'], config['threshhold']);
+    alert("Wallet created successfully");
+  }
+  else {
+    alert("Wallet config is not found.");
+  }
+  ipcRenderer.send('source-id-selected', null)
+}
+
+
+
 ipcRenderer.on('open-scanner', (event, content) => {
   console.log(content);
-  var config = JSON.parse(content);
+  config = JSON.parse(content);
   console.log(config);
   let configList = document.querySelector('.config-list');
   for (var key in config) {
