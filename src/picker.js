@@ -1,5 +1,5 @@
-const {desktopCapturer, ipcRenderer} = require('electron')
-const {eth, key} = require('keychain');
+const {ipcRenderer} = require('electron')
+const {key} = require('keychain');
 console.log(key);
 const domify = require('domify')
 console.log(domify)

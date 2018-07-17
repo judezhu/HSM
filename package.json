@@ -25,6 +25,6 @@
   "dependencies": {
     "domify": "^1.4.0",
     "instascan": "^1.0.0",
-    "keychain": "^1.0.1"
+    "keychain": "^1.0.2"
   }
 }
