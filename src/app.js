@@ -12,7 +12,13 @@ scanner = new Instascan.Scanner({ video: document.getElementById('preview'), sca
 scanner.addListener('scan', function (content, image) {
   console.log('content', content);
   alert(content);
-  ipcRenderer.send('show-picker', content);
+  content = JSON.parse(content);
+  if (!obj.hasOwnProperty('from')) {
+    ipcRenderer.send('show-signer', content);
+  } else {
+    ipcRenderer.send('show-config', content); 
+  }
+  
 });
 Instascan.Camera.getCameras().then(function (cameras) {
   cameras = cameras;

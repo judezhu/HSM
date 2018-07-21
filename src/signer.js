@@ -6,20 +6,15 @@ const domify = require('domify')
 let config = null
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('#config-cancel').addEventListener('click', cancelConfig)
-  document.querySelector('#create-keys').addEventListener('click', createKeys)
+  document.querySelector('#sign-cancel').addEventListener('click', cancelSign)
+  document.querySelector('#sign-transaction').addEventListener('click', signTransaction)
 })
 
-const cancelConfig = () => {
-  var list = document.querySelector('.config-list');
-  while (list.firstChild) {
-    list.removeChild(list.firstChild);
-  }
-
-  ipcRenderer.send('hide-config', null);
+const cancelSign = () => {
+  ipcRenderer.send('hide-signer', null);
 }
 
-const createKeys = () => {
+const signTransaction = () => {
   if (config !== null) {
     key.createSplitKeys(config['walletName'], config['entropy'], config['numShares'], config['threshold']).then(function (data) {
       let canvas = document.querySelector('canvas');
@@ -31,23 +26,15 @@ const createKeys = () => {
     }).catch(function (err) {
       alert('Please check your usb connection.');
     });
-
-    key.verifyKeys(config['walletName'], config['entropy'], config['numShares'], config['threshold']).then(function (isValid) {
-      if(isValid){
-        alert('Keys verification success');
-      } else {
-        alert('Keys verification failed');
-      }
-    }).catch(function (err) {
-      alert('Please check your usb connection. Err when verify keys');
-    });
   }
   else {
     alert("Wallet config is not found.");
   }
 }
 
-ipcRenderer.on('config', (event, content) => {
+ipcRenderer.on('sign', (event, content) => {
+  console.log(content);
+  config = JSON.parse(content);
   console.log(config);
   let configList = document.querySelector('.config-list');
   for (var key in config) {
