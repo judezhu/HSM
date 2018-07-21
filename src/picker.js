@@ -1,8 +1,7 @@
-const {ipcRenderer} = require('electron')
-const {key} = require('keychain');
-console.log(key);
+const { ipcRenderer } = require('electron')
+const { key } = require('keychain');
+var QRCode = require('qrcode')
 const domify = require('domify')
-console.log(domify)
 
 let config = null
 
@@ -12,20 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 const cancelConfig = () => {
-  ipcRenderer.send('source-id-selected', null)
-  console.log("press esc key");
+  var list = document.querySelector('.config-list');
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+
+  ipcRenderer.send('source-id-selected', null);
 }
 
 const createKeys = () => {
-  if(config !== null) {
-    console.log('config', config);
-    key.createSplitKeysAndVerifyResults(config['walletName'], config['entropy'], config['numShares'], config['threshold']);
-    alert("Wallet created successfully");
+  if (config !== null) {
+    key.createSplitKeys(config['walletName'], config['entropy'], config['numShares'], config['threshold']).then(function (data) {
+      let canvas = document.querySelector('canvas');
+      QRCode.toCanvas(canvas, data.address, function (error) {
+        if (error) {
+          console.log(error)
+        }
+      })
+    }).catch(function (err) {
+      alert('Please check your usb connection.');
+    });
   }
   else {
     alert("Wallet config is not found.");
   }
-  ipcRenderer.send('source-id-selected', null)
 }
 
 
