@@ -13,7 +13,7 @@ scanner.addListener('scan', function (content, image) {
   console.log('content', content);
   alert(content);
   content = JSON.parse(content);
-  if (!obj.hasOwnProperty('from')) {
+  if (content.hasOwnProperty('to')) {
     ipcRenderer.send('show-signer', content);
   } else {
     ipcRenderer.send('show-config', content); 

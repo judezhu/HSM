@@ -23,7 +23,12 @@ const createKeys = () => {
   if (config !== null) {
     key.createSplitKeys(config['walletName'], config['entropy'], config['numShares'], config['threshold']).then(function (data) {
       let canvas = document.querySelector('canvas');
-      QRCode.toCanvas(canvas, data.address, function (error) {
+      let wallet = {};
+      wallet.address = data.address;
+      wallet.threshold = config['threshold'];
+      wallet.numShares = config['numShares'];
+      let walletMessage = JSON.stringify(wallet);
+      QRCode.toCanvas(canvas, walletMessage, function (error) {
         if (error) {
           console.log(error)
         }
@@ -48,7 +53,10 @@ const createKeys = () => {
 }
 
 ipcRenderer.on('config', (event, content) => {
+  config = content;
   console.log(config);
+
+
   let configList = document.querySelector('.config-list');
   for (var key in config) {
     if (config.hasOwnProperty(key)) {
