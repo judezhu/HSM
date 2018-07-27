@@ -36,7 +36,7 @@ const signTransaction = () => {
     //   value: '0x00', 
     //   data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
     // }
-    sign.signMessage('DHS', message["devices"], '').then(function (data) {
+    sign.signMessage('DHS', message["devices"], rawTx).then(function (data) {
       let canvas = document.querySelector('canvas');
       QRCode.toCanvas(canvas, data, function (error) {
         if (error) {
