@@ -11,7 +11,7 @@ let activeCameraId = null
 scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5 });
 scanner.addListener('scan', function (content, image) {
   console.log('content', content);
-  alert(content);
+  // alert(content);
   content = JSON.parse(content);
   if (content.hasOwnProperty('to')) {
     ipcRenderer.send('show-signer', content);

@@ -27,6 +27,7 @@ const signTransaction = () => {
       to: message["to"],
       value: message["value"],
     };
+    console.log(message);
     console.log(rawTx);
     // var rawTx = {
     //   nonce: '0x00',
@@ -36,7 +37,7 @@ const signTransaction = () => {
     //   value: '0x00', 
     //   data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
     // }
-    sign.signMessage('DHS', message["devices"], rawTx).then(function (data) {
+    sign.signTransaction('DHS', message["devices"], rawTx).then(function (data) {
       let canvas = document.querySelector('canvas');
       QRCode.toCanvas(canvas, data, function (error) {
         if (error) {
@@ -44,6 +45,7 @@ const signTransaction = () => {
         }
       })
     }).catch(function (err) {
+      console.log(err);
       alert('Please check your usb connection.');
     });
   }
