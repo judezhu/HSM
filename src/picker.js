@@ -13,40 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const cancelConfig = () => {
   var list = document.querySelector('.config-list');
-
   // remove the previous config
   while (list.firstChild) {
     list.removeChild(list.firstChild);
   }
-
   ipcRenderer.send('hide-config', null);
 }
 
-const createKeys = () => {
+const createKeys = async () => {
   if (config !== null) {
     try {
-      key.createSplitKeys(config['walletName'], config['entropy'], config['numShares'], config['threshold']).then(function (data) {
-        createWalletQR(data.address);
-      }).catch(function (err) {
-        alert(err.message);
-      });
+      let data = await key.createSplitKeys(
+        config['walletName'],
+        config['entropy'],
+        config['numShares'],
+        config['threshold']);
+      createWalletQR(data.address);
     } catch (err) {
       alert(err.message);
     }
-
-
-    key.verifyKeys(config['walletName'], config['entropy'], config['numShares'], config['threshold']).then(function (isValid) {
-      if(isValid){
-        alert('Keys verification success');
-      } else {
-        alert('Keys verification failed');
-      }
-    }).catch(function (err) {
-      alert('Please check your usb connection. Err when verify keys');
-    });
-  }
-  else {
-    alert("Wallet config is not found.");
   }
 }
 
@@ -67,14 +52,12 @@ ipcRenderer.on('config', (event, content) => {
 //util functions
 const createWalletQR = (address) => {
   let canvas = document.querySelector('canvas');
-      let wallet = {};
-      wallet.address = address;
-      wallet.threshold = config['threshold'];
-      wallet.numShares = config['numShares'];
-      let walletMessage = JSON.stringify(wallet);
-      QRCode.toCanvas(canvas, walletMessage, function (error) {
-        if (error) {
-          console.log(error)
-        }
-      })
+  let wallet = {};
+  wallet.address = address;
+  wallet.threshold = config['threshold'];
+  wallet.numShares = config['numShares'];
+  let walletMessage = JSON.stringify(wallet);
+  QRCode.toCanvas(canvas, walletMessage, function (error) {
+    alert(error.message);
+  })
 }
