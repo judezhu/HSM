@@ -17,19 +17,23 @@ const cancelConfig = () => {
   while (list.firstChild) {
     list.removeChild(list.firstChild);
   }
+  var canvas = document.querySelector('canvas');
+  const context = canvas.getContext('2d');
+  context.clearRect(0, 0, canvas.width, canvas.height); 
   ipcRenderer.send('hide-config', null);
 }
 
 const createKeys = async () => {
   if (config !== null) {
     try {
-      let data = await key.createSplitKeys(
+      let address = await key.createSplitKeys(
         config['walletName'],
         config['entropy'],
         config['numShares'],
         config['threshold']);
-      createWalletQR(data.address);
-    } catch (err) {
+      createWalletQR(address);
+    } 
+    catch (err) {
       alert(err.message);
     }
   }
@@ -58,6 +62,6 @@ const createWalletQR = (address) => {
   wallet.numShares = config['numShares'];
   let walletMessage = JSON.stringify(wallet);
   QRCode.toCanvas(canvas, walletMessage, function (error) {
-    alert(error.message);
+    if(error) alert(error.message);
   })
 }
