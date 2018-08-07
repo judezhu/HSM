@@ -15,6 +15,9 @@ const cancelSign = () => {
   while (list.firstChild) {
     list.removeChild(list.firstChild);
   }
+  var canvas = document.querySelector('canvas');
+  const context = canvas.getContext('2d');
+  context.clearRect(0, 0, canvas.width, canvas.height); 
   ipcRenderer.send('hide-signer', null);
 }
 
